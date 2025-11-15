@@ -38,8 +38,8 @@ cp .env.example .env
 Edit `.env` and add your Supabase credentials:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
 ### 3. Set Up Local Development with Docker (Option B - For Testing)
@@ -129,7 +129,7 @@ Example: See the commented MongoDB implementation in `storage.ts`.
 
 ## Troubleshooting
 
-### "Missing env.NEXT_PUBLIC_SUPABASE_URL"
+### "Missing env.VITE_SUPABASE_URL"
 
 **Solution:** Make sure you've created `.env` file with your Supabase credentials.
 
@@ -166,8 +166,8 @@ The default schema has permissive RLS policies for MVP. For production:
 1. Push code to GitHub
 2. Import to Vercel
 3. Add environment variables in Vercel dashboard:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
 4. Deploy!
 
 The `vercel.json` is already configured.
