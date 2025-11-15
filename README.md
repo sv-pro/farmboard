@@ -269,6 +269,13 @@ const handleSubmission = async (submission: MissionSubmission) => {
 localStorage.setItem('submissions', JSON.stringify(submissions));
 ```
 
+## 📚 Documentation
+
+- **[Setup Guide](SETUP.md)** - Complete setup instructions for Supabase persistence
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Solutions to common issues
+- **[Project Summary](PROJECT_SUMMARY.md)** - Project overview and status
+- **[Contributing Guide](CONTRIBUTING.md)** - Development guidelines and best practices
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -276,6 +283,8 @@ localStorage.setItem('submissions', JSON.stringify(submissions));
 3. Make your changes
 4. Test thoroughly
 5. Submit a pull request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ## 📄 License
 
