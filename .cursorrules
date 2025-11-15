@@ -1,0 +1,220 @@
+# Cursor AI Rules for Farming Mission Board
+
+## Project Context
+This is a React + TypeScript farming mission board where ALL content is driven by a YAML configuration file. The primary goal is to make missions easily editable without touching code.
+
+## Core Principles
+
+1. **YAML is the Source of Truth**
+   - ALL mission content lives in `src/data/missions.yaml`
+   - Never hardcode mission data in TypeScript/React components
+   - Components render dynamically based on YAML structure
+
+2. **Type Safety with Flexibility**
+   - TypeScript interfaces use `[key: string]: any` for future extensibility
+   - New YAML fields should work without TypeScript changes
+   - Use type-only imports: `import type { ... }`
+
+3. **Hot Reload First**
+   - Any configuration change must preserve hot reload functionality
+   - Changes to missions.yaml should instantly update the UI in dev mode
+   - Test hot reload after modifying Vite config
+
+4. **Component Modularity**
+   - Each component has its own CSS file
+   - Components are pure and data-driven (props only)
+   - No global state management needed
+
+## File Structure Reference
+
+```
+src/
+├── data/missions.yaml       ← Edit this to change mission content
+├── types/index.ts          ← TypeScript type definitions
+├── utils/configLoader.ts   ← YAML parser and validator
+├── components/             ← React components
+│   ├── NetworkSection.tsx  ← Collapsible network sections
+│   ├── MissionCard.tsx     ← Mission card display
+│   └── MissionModal.tsx    ← Mission detail modal with form
+└── App.tsx                 ← Main app component
+```
+
+## Common Tasks
+
+### Adding a New Network
+Edit `src/data/missions.yaml`:
+```yaml
+- key: new_network_key
+  label: "Network Display Name"
+  priority: 2
+  explorer: "https://explorer.url"
+  missions: [...]
+```
+
+### Adding a New Mission
+Add under the appropriate network in `src/data/missions.yaml`:
+```yaml
+- id: unique_mission_id
+  label: "Mission Name"
+  description: "Description here"
+  goal: "What this achieves"
+  difficulty: low|medium|high
+  suggestedProtocols: ["Protocol 1", "Protocol 2"]
+  steps: ["Step 1", "Step 2"]
+  logging:
+    requireTxHash: true
+    requireExplorerUrl: true
+    allowMultipleTxs: false
+```
+
+### Modifying Styles
+- Edit component-specific CSS files
+- Use existing color palette from `src/App.css`
+- Keep mobile-responsive (breakpoint: 640px)
+
+### Adding New Features
+1. Update YAML schema if needed (add new fields)
+2. Update TypeScript types in `src/types/index.ts` (optional, for autocomplete)
+3. Update component rendering logic
+4. Update `CONTRIBUTING.md` with documentation
+
+## Code Style
+
+### TypeScript
+- Use `type` imports: `import type { Mission } from './types'`
+- Prefer `interface` over `type` for objects
+- Use optional chaining: `mission.logging?.requireTxHash`
+- Add `[key: string]: any` to interfaces for extensibility
+
+### React
+- Functional components with hooks
+- Destructure props in function signature
+- Use `React.FC<Props>` for component types
+- Keep components focused (single responsibility)
+
+### CSS
+- Use semantic class names (`.mission-card`, not `.blue-box`)
+- Mobile-first approach
+- Avoid inline styles except for dynamic values
+- Group related properties together
+
+## Testing Checklist
+
+Before committing changes:
+- [ ] `npm run build` succeeds
+- [ ] No TypeScript errors
+- [ ] No console errors/warnings
+- [ ] YAML syntax is valid
+- [ ] UI works on desktop and mobile
+- [ ] Hot reload still functions
+- [ ] Modal opens and displays correctly
+- [ ] Form validation works
+
+## Common Pitfalls
+
+### ❌ Don't Do
+- Don't hardcode mission data in components
+- Don't use `import { Type }` (use `import type { Type }`)
+- Don't break YAML hot reload
+- Don't add dependencies without justification
+- Don't remove type flexibility (`[key: string]: any`)
+- Don't ignore mobile responsiveness
+
+### ✅ Do
+- Keep mission data in YAML
+- Use `import type` for types
+- Test hot reload after config changes
+- Consider mobile viewport when styling
+- Preserve extensibility in types
+- Follow existing patterns
+
+## Dependencies
+
+### Current Stack
+- React 18 - UI framework
+- TypeScript - Type safety
+- Vite - Build tool (HMR)
+- js-yaml - YAML parsing
+- No UI libraries - custom components
+
+### Before Adding Dependencies
+Ask:
+1. Is it really needed?
+2. Does it have good TypeScript support?
+3. Is it maintained?
+4. Does it affect bundle size significantly?
+5. Does it break hot reload?
+
+## Deployment
+
+- **Primary**: Vercel (via `vercel` command)
+- **Config**: `vercel.json` and `.vercelignore` included
+- **Build**: `npm run build` → `dist/` folder
+- **Static SPA**: Can deploy to any static host
+
+## Quick Reference
+
+### Mission YAML Schema
+```yaml
+version: 1
+networks:
+  - key: string          # Required: unique network identifier
+    label: string        # Required: display name
+    priority: number     # Optional: sort order (lower = higher)
+    explorer: string     # Optional: blockchain explorer URL
+    missions:
+      - id: string       # Required: unique mission identifier
+        label: string    # Required: display name
+        description: string  # Optional: mission description
+        goal: string     # Optional: mission objective
+        difficulty: low|medium|high  # Optional
+        suggestedProtocols: string[]  # Optional
+        steps: string[]  # Optional: step-by-step instructions
+        logging:         # Optional: form requirements
+          requireTxHash: boolean
+          requireExplorerUrl: boolean
+          allowMultipleTxs: boolean
+        meta:           # Optional: additional metadata
+          [key: string]: any
+```
+
+### TypeScript Import Pattern
+```typescript
+import type { Mission, Network, MissionBoardConfig } from './types';
+```
+
+### Component Pattern
+```typescript
+import React from 'react';
+import type { Mission } from '../types';
+import './ComponentName.css';
+
+interface ComponentProps {
+  mission: Mission;
+  onAction: () => void;
+}
+
+export const ComponentName: React.FC<ComponentProps> = ({ 
+  mission, 
+  onAction 
+}) => {
+  return (
+    <div className="component-name">
+      {/* JSX here */}
+    </div>
+  );
+};
+```
+
+## AI Assistant Notes
+
+When helping with this project:
+1. Always check `src/data/missions.yaml` first for content changes
+2. Preserve the YAML-driven architecture
+3. Keep hot reload functionality intact
+4. Maintain type safety with flexibility
+5. Test changes work on mobile viewport
+6. Follow existing code patterns
+7. Update documentation if adding features
+
+For questions about architecture or design decisions, refer to `CONTRIBUTING.md`.
