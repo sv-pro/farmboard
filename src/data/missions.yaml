@@ -1,0 +1,201 @@
+version: 1
+
+networks:
+  - key: scroll
+    label: Scroll
+    priority: 1
+    explorer: "https://scrollscan.com"
+    missions:
+      - id: scroll_bridge_twice
+        label: "Bridge funds to Scroll (2x)"
+        description: >
+          Сделай два моста в Scroll и обратно малыми суммами, чтобы зафиксировать
+          вход и выход средств для ретродропа.
+        goal: "Cross-chain activity & bridge usage on Scroll."
+        difficulty: low
+        suggestedProtocols:
+          - "Official Scroll Bridge"
+          - "Orbiter Finance"
+        steps:
+          - "Bridge небольшую сумму в Scroll."
+          - "Подожди подтверждений."
+          - "Сделай обратный мост."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+        meta:
+          recommendedFrequency: "2 tx within 48h"
+
+      - id: scroll_2_dapps_swap
+        label: "Swaps on 2 dApps"
+        description: >
+          Сделай по несколько свопов в двух разных DEX на Scroll, чтобы размазать
+          активность по экосистеме.
+        goal: "DEX usage and liquidity interaction."
+        difficulty: low
+        suggestedProtocols:
+          - "SyncSwap"
+          - "Skydrome"
+        steps:
+          - "Выбери первый DEX и сделай 1–2 свопа малыми суммами."
+          - "Выбери второй DEX и повтори то же."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+        meta:
+          recommendedFrequency: "1–2 sessions in 48h"
+
+      - id: scroll_nft_mint
+        label: "Mint NFT"
+        description: >
+          Заминть любой недорогой NFT в экосистеме Scroll: коллекция, квест или badge.
+        goal: "NFT interaction signal on Scroll."
+        difficulty: low
+        steps:
+          - "Найди дешёвый NFT или квест."
+          - "Заминть NFT, желательно с уникальным контрактом."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: false
+
+      - id: scroll_defi_action
+        label: "DeFi action (pool / lend)"
+        description: >
+          Зайди в пул ликвидности или сделай лендинг/займ в одном из DeFi-протоколов Scroll.
+        goal: "DeFi TVL & lending/LP signal."
+        difficulty: medium
+        steps:
+          - "Выбери DeFi-протокол (pool или lending)."
+          - "Задеплой небольшую сумму в пул или выдай/возьми займ."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+
+  - key: zksync
+    label: zkSync
+    priority: 1
+    explorer: "https://explorer.zksync.io"
+    missions:
+      - id: zksync_2_swaps
+        label: "2 swaps (SyncSwap + Mute)"
+        description: >
+          Сделай минимум по два свопа на SyncSwap и Mute, желательно в разные дни.
+        goal: "DEX usage on zkSync Era."
+        difficulty: low
+        suggestedProtocols:
+          - "SyncSwap"
+          - "Mute.io"
+        steps:
+          - "Сделай 1–2 свопа на SyncSwap."
+          - "Сделай 1–2 свопа на Mute."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+
+      - id: zksync_orbiter_bridge
+        label: "Orbiter bridge"
+        description: >
+          Используй Orbiter для моста в zkSync и обратно малыми суммами.
+        goal: "Cross-chain bridge usage to zkSync."
+        difficulty: low
+        suggestedProtocols:
+          - "Orbiter Finance"
+        steps:
+          - "Bridge средства через Orbiter в zkSync."
+          - "При желании сделай обратный мост."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+
+      - id: zksync_nft
+        label: "Mint NFT"
+        description: >
+          Заминть любой NFT на zkSync: квест, коллекция или галерейный NFT.
+        goal: "NFT interaction on zkSync."
+        difficulty: low
+        steps:
+          - "Найди недорогой NFT/квест."
+          - "Заминть NFT."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: false
+
+  - key: base
+    label: Base
+    priority: 2
+    explorer: "https://basescan.org"
+    missions:
+      - id: base_swap
+        label: "1 swap on Base"
+        description: >
+          Один небольшой своп на любом DEX в сети Base (например, Aerodrome).
+        goal: "DEX touch on Base."
+        difficulty: low
+        suggestedProtocols:
+          - "Aerodrome"
+          - "Uniswap on Base"
+        steps:
+          - "Подключи кошелёк к DEX."
+          - "Сделай своп небольшой суммы."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+
+      - id: base_nft
+        label: "Mint NFT on Base"
+        description: >
+          Заминть NFT на Base, желательно в рамках квеста или социальной активности.
+        goal: "NFT/social graph signal on Base."
+        difficulty: low
+        steps:
+          - "Выбери NFT/квест на Base."
+          - "Заминть NFT."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: false
+
+  - key: solana
+    label: Solana
+    priority: 2
+    explorer: "https://solscan.io"
+    missions:
+      - id: solana_kamino
+        label: "Kamino position"
+        description: >
+          Открой позицию на Kamino: депозит или LP в одном из безопасных пулов.
+        goal: "DeFi LP/borrow activity on Solana."
+        difficulty: medium
+        suggestedProtocols:
+          - "Kamino"
+        steps:
+          - "Подключи кошелёк к Kamino."
+          - "Выбери пул и внеси небольшую сумму."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true
+
+      - id: solana_drift
+        label: "Drift trade"
+        description: >
+          Сделай простую сделку на Drift (spot/перп), без агрессивного плеча.
+        goal: "Perp/derivatives usage on Solana."
+        difficulty: medium
+        suggestedProtocols:
+          - "Drift"
+        steps:
+          - "Задеплой немного USDC/SOL на Drift."
+          - "Открой и закрой небольшую позицию."
+        logging:
+          requireTxHash: true
+          requireExplorerUrl: true
+          allowMultipleTxs: true

@@ -1,0 +1,157 @@
+.network-section {
+  margin-bottom: 24px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.network-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: white;
+  border: none;
+  border-left: 4px solid;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-family: inherit;
+}
+
+.network-header:hover {
+  background: #fafafa;
+}
+
+.network-header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.network-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.network-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.network-name {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.network-priority {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #f59e0b;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.network-explorer {
+  margin: 0 0 12px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.network-explorer a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.network-explorer a:hover {
+  text-decoration: underline;
+}
+
+.network-description {
+  margin: 0 0 12px 0;
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.network-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.network-stat {
+  font-weight: 500;
+}
+
+.network-stat-separator {
+  color: #d1d5db;
+}
+
+.network-toggle {
+  font-size: 20px;
+  color: #9ca3af;
+  transition: transform 0.2s;
+  margin-left: 16px;
+  flex-shrink: 0;
+}
+
+.network-toggle.expanded {
+  transform: rotate(180deg);
+}
+
+.network-content {
+  padding: 0 24px 24px 24px;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .network-header {
+    padding: 20px 16px;
+  }
+  
+  .network-name {
+    font-size: 24px;
+  }
+  
+  .network-icon {
+    font-size: 28px;
+  }
+  
+  .network-content {
+    padding: 0 16px 16px 16px;
+  }
+  
+  .network-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .network-stat-separator {
+    display: none;
+  }
+}

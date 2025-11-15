@@ -1,7 +1,7 @@
 {
   "name": "farmboard",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "React + TypeScript Web3 Farming Mission Board - YAML-driven, hot-reload enabled mission tracker for blockchain networks",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,12 +9,33 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "keywords": [
+    "web3",
+    "farming",
+    "missions",
+    "blockchain",
+    "react",
+    "typescript",
+    "yaml",
+    "scroll",
+    "zksync",
+    "base",
+    "solana"
+  ],
+  "author": "sv-pro",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sv-pro/farmboard.git"
+  },
   "dependencies": {
+    "js-yaml": "^4.1.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
