@@ -1,15 +1,17 @@
 import React from 'react';
-import type { Mission } from '../types';
+import type { Mission, ProgressStatus } from '../types';
 import './MissionCard.css';
 
 interface MissionCardProps {
   mission: Mission;
   onMissionClick: () => void;
+  status?: ProgressStatus;
 }
 
 export const MissionCard: React.FC<MissionCardProps> = ({
   mission,
   onMissionClick,
+  status = 'not_started',
 }) => {
   const getDifficultyClass = (difficulty?: string) => {
     switch (difficulty?.toLowerCase()) {
@@ -24,11 +26,31 @@ export const MissionCard: React.FC<MissionCardProps> = ({
     }
   };
 
+  const getStatusBadge = (status: ProgressStatus) => {
+    switch (status) {
+      case 'completed':
+        return { icon: '✅', label: 'Completed', class: 'status-completed' };
+      case 'in_progress':
+        return { icon: '🔄', label: 'In Progress', class: 'status-in-progress' };
+      default:
+        return null;
+    }
+  };
+
+  const statusBadge = getStatusBadge(status);
+
   return (
-    <button className="mission-card" onClick={onMissionClick}>
+    <button className={`mission-card ${status === 'completed' ? 'completed' : ''}`} onClick={onMissionClick}>
       <div className="mission-content">
         <div className="mission-header">
-          <h3 className="mission-name">{mission.label}</h3>
+          <h3 className="mission-name">
+            {mission.label}
+            {statusBadge && (
+              <span className={`mission-status ${statusBadge.class}`}>
+                {statusBadge.icon} {statusBadge.label}
+              </span>
+            )}
+          </h3>
           {mission.difficulty && (
             <span className={`mission-difficulty ${getDifficultyClass(mission.difficulty)}`}>
               {mission.difficulty}
