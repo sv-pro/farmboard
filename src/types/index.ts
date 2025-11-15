@@ -74,3 +74,27 @@ export interface Action {
   [key: string]: any;
 }
 
+/**
+ * User progress tracking types
+ */
+export type ProgressStatus = 'not_started' | 'in_progress' | 'completed';
+
+export interface MissionProgress {
+  missionId: string;
+  status: ProgressStatus;
+  txHash?: string;
+  explorerUrl?: string;
+  notes?: string;
+  startedAt?: string;
+  completedAt?: string;
+  submissions?: MissionSubmission[]; // Support multiple submissions
+  [key: string]: any; // Support future fields
+}
+
+export interface UserProgress {
+  userId: string;
+  missions: Record<string, MissionProgress>; // missionId -> progress
+  lastUpdated: string;
+  [key: string]: any; // Support future fields
+}
+

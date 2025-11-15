@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import type { Network, Mission } from '../types';
+import type { Network, Mission, ProgressStatus } from '../types';
 import { MissionCard } from './MissionCard';
 import './NetworkSection.css';
 
 interface NetworkSectionProps {
   network: Network;
   onMissionClick: (mission: Mission, networkLabel: string, networkExplorer?: string) => void;
+  getMissionStatus?: (missionId: string) => ProgressStatus;
   defaultExpanded?: boolean;
 }
 
 export const NetworkSection: React.FC<NetworkSectionProps> = ({
   network,
   onMissionClick,
+  getMissionStatus,
   defaultExpanded = true,
 }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -92,9 +94,10 @@ export const NetworkSection: React.FC<NetworkSectionProps> = ({
             <MissionCard
               key={mission.id}
               mission={mission}
-              onMissionClick={() => 
+              onMissionClick={() =>
                 onMissionClick(mission, network.label, network.explorer)
               }
+              status={getMissionStatus?.(mission.id)}
             />
           ))}
         </div>

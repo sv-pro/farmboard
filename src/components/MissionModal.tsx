@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Mission, MissionSubmission } from '../types';
+import type { Mission, MissionSubmission, MissionProgress } from '../types';
 import './MissionModal.css';
 
 interface MissionModalProps {
@@ -8,6 +8,8 @@ interface MissionModalProps {
   networkExplorer?: string;
   onClose: () => void;
   onSubmit?: (submission: MissionSubmission) => void;
+  onSaveProgress?: (missionId: string, progress: MissionProgress) => Promise<void>;
+  currentProgress?: MissionProgress;
 }
 
 export const MissionModal: React.FC<MissionModalProps> = ({
@@ -16,15 +18,19 @@ export const MissionModal: React.FC<MissionModalProps> = ({
   networkExplorer,
   onClose,
   onSubmit,
+  onSaveProgress,
+  currentProgress,
 }) => {
-  const [txHash, setTxHash] = useState('');
-  const [explorerUrl, setExplorerUrl] = useState('');
-  const [notes, setNotes] = useState('');
+  const [txHash, setTxHash] = useState(currentProgress?.txHash || '');
+  const [explorerUrl, setExplorerUrl] = useState(currentProgress?.explorerUrl || '');
+  const [notes, setNotes] = useState(currentProgress?.notes || '');
   const [submitted, setSubmitted] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setIsSaving(true);
+
     const submission: MissionSubmission = {
       missionId: mission.id,
       txHash,
@@ -32,14 +38,34 @@ export const MissionModal: React.FC<MissionModalProps> = ({
       notes,
       timestamp: new Date().toISOString(),
     };
-    
+
+    // Create progress object
+    const progress: MissionProgress = {
+      missionId: mission.id,
+      status: 'completed',
+      txHash,
+      explorerUrl,
+      notes,
+      completedAt: new Date().toISOString(),
+      submissions: currentProgress?.submissions
+        ? [...currentProgress.submissions, submission]
+        : [submission],
+    };
+
+    // Call legacy onSubmit if provided
     if (onSubmit) {
       onSubmit(submission);
     }
-    
+
+    // Save progress using new system
+    if (onSaveProgress) {
+      await onSaveProgress(mission.id, progress);
+    }
+
     // Log to console for demo purposes
     console.log('Mission Submission:', submission);
-    
+
+    setIsSaving(false);
     setSubmitted(true);
     setTimeout(() => {
       onClose();
@@ -197,8 +223,8 @@ export const MissionModal: React.FC<MissionModalProps> = ({
                   />
                 </div>
 
-                <button type="submit" className="submit-button">
-                  Submit Completion
+                <button type="submit" className="submit-button" disabled={isSaving}>
+                  {isSaving ? 'Saving...' : 'Submit Completion'}
                 </button>
               </form>
             ) : (

@@ -3,6 +3,7 @@ import type { Mission, MissionBoardConfig, MissionSubmission } from './types';
 import { loadMissionsConfig } from './utils/configLoader';
 import { NetworkSection } from './components/NetworkSection';
 import { MissionModal } from './components/MissionModal';
+import { useProgress } from './hooks/useProgress';
 import './App.css';
 
 function App() {
@@ -14,6 +15,18 @@ function App() {
     networkLabel: string;
     networkExplorer?: string;
   } | null>(null);
+
+  // Progress tracking hook
+  const {
+    progress,
+    userId,
+    isLoading: progressLoading,
+    isSyncing,
+    pendingSyncs,
+    updateProgress,
+    getMissionStatus,
+    manualSync,
+  } = useProgress();
 
   // Load missions configuration from YAML
   useEffect(() => {
@@ -44,7 +57,7 @@ function App() {
 
   const handleSubmission = (submission: MissionSubmission) => {
     console.log('Mission completed:', submission);
-    // Here you could send to an API or save to local storage
+    // Legacy handler - actual saving happens in MissionModal via updateProgress
   };
 
   if (loading) {
@@ -93,12 +106,27 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>🚀 Farming Mission Board</h1>
-        <p className="app-description">
-          Track and complete farming missions across multiple blockchain networks
-        </p>
+        <div className="header-content">
+          <div>
+            <h1>🚀 Farming Mission Board</h1>
+            <p className="app-description">
+              Track and complete farming missions across multiple blockchain networks
+            </p>
+          </div>
+          <div className="sync-status">
+            {isSyncing && <span className="sync-indicator">🔄 Syncing...</span>}
+            {!isSyncing && pendingSyncs > 0 && (
+              <button onClick={manualSync} className="sync-button">
+                ⚠️ {pendingSyncs} pending sync{pendingSyncs > 1 ? 's' : ''}
+              </button>
+            )}
+            {!isSyncing && pendingSyncs === 0 && (
+              <span className="sync-indicator">✅ Synced</span>
+            )}
+          </div>
+        </div>
         {config.version && (
-          <span className="app-version">v{config.version}</span>
+          <span className="app-version">v{config.version} | User: {userId.slice(0, 12)}...</span>
         )}
       </header>
 
@@ -108,6 +136,7 @@ function App() {
             key={network.key}
             network={network}
             onMissionClick={handleMissionClick}
+            getMissionStatus={getMissionStatus}
             defaultExpanded={true}
           />
         ))}
@@ -127,6 +156,8 @@ function App() {
           networkExplorer={selectedMission.networkExplorer}
           onClose={handleCloseModal}
           onSubmit={handleSubmission}
+          onSaveProgress={updateProgress}
+          currentProgress={progress.missions[selectedMission.mission.id]}
         />
       )}
     </div>
