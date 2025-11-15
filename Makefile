@@ -106,7 +106,7 @@ stop: ## Stop dev server
 		kill $$(cat /tmp/farmboard-dev.pid) 2>/dev/null || true; \
 		rm -f /tmp/farmboard-dev.pid; \
 	fi
-	@pkill -f "vite" 2>/dev/null || true
+	@pkill -f "[v]ite" 2>/dev/null || true
 	@echo "✅ Dev server stopped"
 
 status: ## Check if dev server is running
@@ -115,9 +115,9 @@ status: ## Check if dev server is running
 		echo "📋 PID: $$(cat /tmp/farmboard-dev.pid)"; \
 		echo "📋 Logs: tail -f /tmp/farmboard-dev.log"; \
 		echo "🌐 URL: http://localhost:5173"; \
-	elif pgrep -f "vite" > /dev/null; then \
+	elif pgrep -f "[v]ite" > /dev/null; then \
 		echo "⚠️  Dev server is running (no PID file)"; \
-		echo "📋 PID: $$(pgrep -f vite | head -1)"; \
+		echo "📋 PID: $$(pgrep -f '[v]ite' | head -1)"; \
 		echo "💡 Run 'make stop' to stop it"; \
 	else \
 		echo "❌ Dev server is not running"; \
@@ -279,9 +279,9 @@ info: ## Show project information
 		echo "  Status: Running ✅"; \
 		echo "  PID: $$(cat /tmp/farmboard-dev.pid)"; \
 		echo "  Logs: /tmp/farmboard-dev.log"; \
-	elif pgrep -f "vite" > /dev/null; then \
+	elif pgrep -f "[v]ite" > /dev/null; then \
 		echo "  Status: Running ⚠️  (no PID file)"; \
-		echo "  PID: $$(pgrep -f vite | head -1)"; \
+		echo "  PID: $$(pgrep -f '[v]ite' | head -1)"; \
 	else \
 		echo "  Status: Stopped ❌"; \
 	fi
