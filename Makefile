@@ -18,12 +18,11 @@ quickstart: ## 🚀 Sync, rebuild, and prepare the app (one command to rule them
 	@$(MAKE) sync
 	@$(MAKE) rebuild
 	@$(MAKE) stop
+	@$(MAKE) dev-bg
 	@echo ""
 	@echo "✅ Quickstart complete!"
 	@echo ""
-	@echo "🎯 Next step: Start the dev server with one of:"
-	@echo "   make dev        - Run in foreground (recommended)"
-	@echo "   make dev-bg     - Run in background"
+	@echo "🎯 dev server is running in background"
 
 ##@ Development
 
