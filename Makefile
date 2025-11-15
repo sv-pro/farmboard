@@ -13,12 +13,17 @@ help: ## Display this help message
 
 ##@ Quick Start
 
-quickstart: ## 🚀 Sync, rebuild, and restart the app (one command to rule them all!)
+quickstart: ## 🚀 Sync, rebuild, and prepare the app (one command to rule them all!)
 	@echo "🚀 Starting Farmboard quickstart..."
 	@$(MAKE) sync
 	@$(MAKE) rebuild
-	@$(MAKE) restart
-	@echo "✅ Quickstart complete! App should be running at http://localhost:5173"
+	@$(MAKE) stop
+	@echo ""
+	@echo "✅ Quickstart complete!"
+	@echo ""
+	@echo "🎯 Next step: Start the dev server with one of:"
+	@echo "   make dev        - Run in foreground (recommended)"
+	@echo "   make dev-bg     - Run in background"
 
 ##@ Development
 
@@ -77,33 +82,46 @@ rebuild: sync install ## Rebuild app (sync + install)
 
 ##@ Process Management
 
-restart: ## Restart dev server (kill existing and start new)
-	@echo "🔄 Restarting dev server..."
-	@pkill -f "vite" || true
-	@sleep 1
-	@echo "🚀 Starting new dev server in background..."
-	@nohup npm run dev > /tmp/farmboard-dev.log 2>&1 &
-	@sleep 2
-	@if pgrep -f "vite" > /dev/null; then \
+restart: stop dev-bg ## Restart dev server (stop + start in background)
+
+dev-bg: ## Start dev server in background
+	@echo "🚀 Starting dev server in background..."
+	@(nohup npm run dev > /tmp/farmboard-dev.log 2>&1 & echo $$! > /tmp/farmboard-dev.pid) || true
+	@sleep 3
+	@if [ -f /tmp/farmboard-dev.pid ] && kill -0 $$(cat /tmp/farmboard-dev.pid) 2>/dev/null; then \
 		echo "✅ Dev server started successfully!"; \
+		echo "📋 PID: $$(cat /tmp/farmboard-dev.pid)"; \
 		echo "📋 Logs: tail -f /tmp/farmboard-dev.log"; \
 		echo "🌐 URL: http://localhost:5173"; \
+		echo "🛑 Stop: make stop"; \
 	else \
-		echo "❌ Failed to start dev server. Check logs: cat /tmp/farmboard-dev.log"; \
+		echo "❌ Failed to start dev server"; \
+		echo "📋 Check logs: cat /tmp/farmboard-dev.log"; \
 		exit 1; \
 	fi
 
 stop: ## Stop dev server
 	@echo "🛑 Stopping dev server..."
-	@pkill -f "vite" || echo "No running dev server found"
+	@if [ -f /tmp/farmboard-dev.pid ]; then \
+		kill $$(cat /tmp/farmboard-dev.pid) 2>/dev/null || true; \
+		rm -f /tmp/farmboard-dev.pid; \
+	fi
+	@pkill -f "vite" 2>/dev/null || true
+	@echo "✅ Dev server stopped"
 
 status: ## Check if dev server is running
-	@if pgrep -f "vite" > /dev/null; then \
+	@if [ -f /tmp/farmboard-dev.pid ] && kill -0 $$(cat /tmp/farmboard-dev.pid) 2>/dev/null; then \
 		echo "✅ Dev server is running"; \
-		echo "📋 PID: $$(pgrep -f vite)"; \
+		echo "📋 PID: $$(cat /tmp/farmboard-dev.pid)"; \
 		echo "📋 Logs: tail -f /tmp/farmboard-dev.log"; \
+		echo "🌐 URL: http://localhost:5173"; \
+	elif pgrep -f "vite" > /dev/null; then \
+		echo "⚠️  Dev server is running (no PID file)"; \
+		echo "📋 PID: $$(pgrep -f vite | head -1)"; \
+		echo "💡 Run 'make stop' to stop it"; \
 	else \
 		echo "❌ Dev server is not running"; \
+		echo "💡 Run 'make dev' or 'make dev-bg' to start"; \
 	fi
 
 logs: ## Show dev server logs
@@ -257,9 +275,13 @@ info: ## Show project information
 	@echo "  Services: $$(docker-compose ps --services 2>/dev/null | wc -l || echo "0")"
 	@echo ""
 	@echo "Dev Server:"
-	@if pgrep -f "vite" > /dev/null; then \
+	@if [ -f /tmp/farmboard-dev.pid ] && kill -0 $$(cat /tmp/farmboard-dev.pid) 2>/dev/null; then \
 		echo "  Status: Running ✅"; \
-		echo "  PID: $$(pgrep -f vite)"; \
+		echo "  PID: $$(cat /tmp/farmboard-dev.pid)"; \
+		echo "  Logs: /tmp/farmboard-dev.log"; \
+	elif pgrep -f "vite" > /dev/null; then \
+		echo "  Status: Running ⚠️  (no PID file)"; \
+		echo "  PID: $$(pgrep -f vite | head -1)"; \
 	else \
 		echo "  Status: Stopped ❌"; \
 	fi
