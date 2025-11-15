@@ -20,7 +20,6 @@ function App() {
   const {
     progress,
     userId,
-    isLoading: progressLoading,
     isSyncing,
     pendingSyncs,
     updateProgress,

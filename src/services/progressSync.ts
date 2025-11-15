@@ -5,7 +5,7 @@
  * - Auto-retries when connection restored
  */
 
-import { UserProgress, MissionProgress } from '../types';
+import type { UserProgress, MissionProgress } from '../types';
 
 const STORAGE_KEY = 'farmboard_progress';
 const PENDING_SYNC_KEY = 'farmboard_pending_sync';

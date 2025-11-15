@@ -3,7 +3,7 @@
  * Makes database migration easy - just swap implementations!
  */
 
-import { UserProgress, MissionProgress } from '../types';
+import type { UserProgress, MissionProgress } from '../types';
 import { getSupabase } from '../lib/supabase';
 
 /**
@@ -73,8 +73,6 @@ export class SupabaseStorageService implements StorageService {
     missionId: string,
     progress: MissionProgress
   ): Promise<void> {
-    const supabase = getSupabase();
-
     // First, get existing progress
     const existing = await this.getProgress(userId);
     const missions = existing?.missions || {};
@@ -94,8 +92,6 @@ export class SupabaseStorageService implements StorageService {
   }
 
   async deleteMissionProgress(userId: string, missionId: string): Promise<void> {
-    const supabase = getSupabase();
-
     // Get existing progress
     const existing = await this.getProgress(userId);
     if (!existing) return;

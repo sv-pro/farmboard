@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import {
+import type {
   UserProgress,
   MissionProgress,
   ProgressStatus,
