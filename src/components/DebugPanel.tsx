@@ -11,8 +11,17 @@ export const DebugPanel: React.FC = () => {
     setTestResult('Testing...');
     try {
       const response = await fetch('/api/progress?userId=test_connection');
-      const data = await response.json();
-      setTestResult(`✅ API works! Status: ${response.status}\n${JSON.stringify(data, null, 2)}`);
+      const text = await response.text();
+
+      // Try to parse as JSON
+      let data;
+      try {
+        data = JSON.parse(text);
+        setTestResult(`✅ API works! Status: ${response.status}\n${JSON.stringify(data, null, 2)}`);
+      } catch {
+        // Not JSON - show raw response
+        setTestResult(`⚠️ API returned non-JSON response\nStatus: ${response.status}\n\nResponse:\n${text.substring(0, 500)}`);
+      }
     } catch (error) {
       setTestResult(`❌ API failed: ${error}`);
     }
@@ -47,8 +56,17 @@ export const DebugPanel: React.FC = () => {
         }),
       });
 
-      const data = await response.json();
-      setTestResult(`✅ Sync test complete! Status: ${response.status}\n${JSON.stringify(data, null, 2)}`);
+      const text = await response.text();
+
+      // Try to parse as JSON
+      let data;
+      try {
+        data = JSON.parse(text);
+        setTestResult(`✅ Sync test complete! Status: ${response.status}\n${JSON.stringify(data, null, 2)}`);
+      } catch {
+        // Not JSON - show raw response
+        setTestResult(`⚠️ Sync returned non-JSON response\nStatus: ${response.status}\n\nResponse:\n${text.substring(0, 500)}`);
+      }
     } catch (error) {
       setTestResult(`❌ Sync failed: ${error}`);
     }

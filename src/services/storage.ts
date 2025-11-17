@@ -4,7 +4,7 @@
  */
 
 import type { UserProgress, MissionProgress } from '../types';
-import { getSupabase } from '../lib/supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Storage service interface
@@ -27,8 +27,14 @@ export interface StorageService {
  * Schema: { id, user_id, missions (JSONB), last_updated }
  */
 export class SupabaseStorageService implements StorageService {
+  private supabase: SupabaseClient;
+
+  constructor(supabaseClient: SupabaseClient) {
+    this.supabase = supabaseClient;
+  }
+
   async getProgress(userId: string): Promise<UserProgress | null> {
-    const supabase = getSupabase();
+    const supabase = this.supabase;
 
     const { data, error } = await supabase
       .from('users_progress')
@@ -53,7 +59,7 @@ export class SupabaseStorageService implements StorageService {
   }
 
   async saveProgress(userId: string, progress: UserProgress): Promise<void> {
-    const supabase = getSupabase();
+    const supabase = this.supabase;
 
     const { error } = await supabase
       .from('users_progress')
@@ -160,5 +166,5 @@ export class SupabaseStorageService implements StorageService {
  * }
  */
 
-// Export singleton instance (swap here to change database!)
-export const storageService: StorageService = new SupabaseStorageService();
+// Export class for manual instantiation
+// API routes and other code should create their own instance with appropriate supabase client

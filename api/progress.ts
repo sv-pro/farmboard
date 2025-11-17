@@ -4,8 +4,12 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { storageService } from '../src/services/storage';
-import { UserProgress, MissionProgress } from '../src/types';
+import type { MissionProgress } from '../src/types';
+import { SupabaseStorageService } from '../src/services/storage';
+import { getSupabaseServer } from './supabase.server';
+
+// Create storage service with server-side Supabase client
+const storageService = new SupabaseStorageService(getSupabaseServer());
 
 /**
  * GET /api/progress?userId=xxx
