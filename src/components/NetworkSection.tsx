@@ -7,6 +7,7 @@ interface NetworkSectionProps {
   network: Network;
   onMissionClick: (mission: Mission, networkLabel: string, networkExplorer?: string) => void;
   getMissionStatus?: (missionId: string) => ProgressStatus;
+  getSubmissionCount?: (missionId: string) => number;
   defaultExpanded?: boolean;
 }
 
@@ -14,6 +15,7 @@ export const NetworkSection: React.FC<NetworkSectionProps> = ({
   network,
   onMissionClick,
   getMissionStatus,
+  getSubmissionCount,
   defaultExpanded = true,
 }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -98,6 +100,7 @@ export const NetworkSection: React.FC<NetworkSectionProps> = ({
                 onMissionClick(mission, network.label, network.explorer)
               }
               status={getMissionStatus?.(mission.id)}
+              submissionCount={getSubmissionCount?.(mission.id) || 0}
             />
           ))}
         </div>

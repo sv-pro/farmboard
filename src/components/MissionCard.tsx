@@ -6,12 +6,14 @@ interface MissionCardProps {
   mission: Mission;
   onMissionClick: () => void;
   status?: ProgressStatus;
+  submissionCount?: number;
 }
 
 export const MissionCard: React.FC<MissionCardProps> = ({
   mission,
   onMissionClick,
   status = 'not_started',
+  submissionCount = 0,
 }) => {
   const getDifficultyClass = (difficulty?: string) => {
     switch (difficulty?.toLowerCase()) {
@@ -29,7 +31,10 @@ export const MissionCard: React.FC<MissionCardProps> = ({
   const getStatusBadge = (status: ProgressStatus) => {
     switch (status) {
       case 'completed':
-        return { icon: '✅', label: 'Completed', class: 'status-completed' };
+        const label = submissionCount > 1
+          ? `Completed (${submissionCount}×)`
+          : 'Completed';
+        return { icon: '✅', label, class: 'status-completed' };
       case 'in_progress':
         return { icon: '🔄', label: 'In Progress', class: 'status-in-progress' };
       default:

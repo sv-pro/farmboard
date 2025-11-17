@@ -30,6 +30,7 @@ interface UseProgressReturn {
   updateProgress: (missionId: string, progress: MissionProgress) => Promise<void>;
   deleteProgress: (missionId: string) => Promise<void>;
   getMissionStatus: (missionId: string) => ProgressStatus;
+  getSubmissionCount: (missionId: string) => number;
   manualSync: () => Promise<void>;
 }
 
@@ -122,6 +123,17 @@ export function useProgress(): UseProgressReturn {
   );
 
   /**
+   * Get submission count for a mission
+   */
+  const getSubmissionCount = useCallback(
+    (missionId: string): number => {
+      const mission = progress.missions[missionId];
+      return mission?.submissions?.length || 0;
+    },
+    [progress]
+  );
+
+  /**
    * Trigger manual sync
    */
   const manualSync = useCallback(async () => {
@@ -142,6 +154,7 @@ export function useProgress(): UseProgressReturn {
     updateProgress,
     deleteProgress,
     getMissionStatus,
+    getSubmissionCount,
     manualSync,
   };
 }

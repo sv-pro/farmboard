@@ -24,6 +24,7 @@ function App() {
     pendingSyncs,
     updateProgress,
     getMissionStatus,
+    getSubmissionCount,
     manualSync,
   } = useProgress();
 
@@ -136,6 +137,7 @@ function App() {
             network={network}
             onMissionClick={handleMissionClick}
             getMissionStatus={getMissionStatus}
+            getSubmissionCount={getSubmissionCount}
             defaultExpanded={true}
           />
         ))}

@@ -21,9 +21,9 @@ export const MissionModal: React.FC<MissionModalProps> = ({
   onSaveProgress,
   currentProgress,
 }) => {
-  const [txHash, setTxHash] = useState(currentProgress?.txHash || '');
-  const [explorerUrl, setExplorerUrl] = useState(currentProgress?.explorerUrl || '');
-  const [notes, setNotes] = useState(currentProgress?.notes || '');
+  const [txHash, setTxHash] = useState('');
+  const [explorerUrl, setExplorerUrl] = useState('');
+  const [notes, setNotes] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -169,9 +169,58 @@ export const MissionModal: React.FC<MissionModalProps> = ({
             </section>
           )}
 
+          {/* Previous Submissions History */}
+          {currentProgress?.submissions && currentProgress.submissions.length > 0 && (
+            <section className="modal-section submission-history">
+              <h3>Previous Submissions ({currentProgress.submissions.length})</h3>
+              <div className="submissions-list">
+                {currentProgress.submissions.map((sub, idx) => (
+                  <div key={idx} className="submission-item">
+                    <div className="submission-header">
+                      <span className="submission-number">#{idx + 1}</span>
+                      <span className="submission-date">
+                        {new Date(sub.timestamp).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
+                    <div className="submission-details">
+                      <div className="submission-field">
+                        <span className="field-label">TX Hash:</span>
+                        <code className="field-value">{sub.txHash}</code>
+                      </div>
+                      {sub.explorerUrl && (
+                        <div className="submission-field">
+                          <a
+                            href={sub.explorerUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="explorer-link-small"
+                          >
+                            View on Explorer →
+                          </a>
+                        </div>
+                      )}
+                      {sub.notes && (
+                        <div className="submission-field">
+                          <span className="field-label">Notes:</span>
+                          <span className="field-value">{sub.notes}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Submission Form */}
           <section className="modal-section submission-form">
-            <h3>Log Completion</h3>
+            <h3>{currentProgress?.submissions && currentProgress.submissions.length > 0 ? 'Add Another Completion' : 'Log Completion'}</h3>
             {allowMultipleTxs && (
               <p className="form-note">
                 ℹ️ This mission may require multiple transactions
