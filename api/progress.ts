@@ -4,12 +4,7 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import type { MissionProgress } from '../src/types';
-import { SupabaseStorageService } from '../src/services/storage';
-import { getSupabaseServer } from './supabase.server';
-
-// Create storage service with server-side Supabase client
-const storageService = new SupabaseStorageService(getSupabaseServer());
+import { storage, type MissionProgress } from './storage';
 
 /**
  * GET /api/progress?userId=xxx
@@ -23,7 +18,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const progress = await storageService.getProgress(userId);
+    const progress = await storage.getProgress(userId);
 
     if (!progress) {
       // Return empty progress if user not found
@@ -60,7 +55,7 @@ async function handlePost(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    await storageService.updateMissionProgress(userId, missionId, progress);
+    await storage.updateMissionProgress(userId, missionId, progress);
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -81,7 +76,7 @@ async function handleDelete(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    await storageService.deleteMissionProgress(userId, missionId);
+    await storage.deleteMissionProgress(userId, missionId);
 
     return res.status(200).json({ success: true });
   } catch (error) {
