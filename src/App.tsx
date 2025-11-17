@@ -3,6 +3,7 @@ import type { Mission, MissionBoardConfig, MissionSubmission } from './types';
 import { loadMissionsConfig } from './utils/configLoader';
 import { NetworkSection } from './components/NetworkSection';
 import { MissionModal } from './components/MissionModal';
+import { DebugPanel } from './components/DebugPanel';
 import { useProgress } from './hooks/useProgress';
 import './App.css';
 
@@ -161,6 +162,8 @@ function App() {
           currentProgress={progress.missions[selectedMission.mission.id]}
         />
       )}
+
+      <DebugPanel />
     </div>
   );
 }
