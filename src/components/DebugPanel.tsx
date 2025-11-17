@@ -76,6 +76,17 @@ export const DebugPanel: React.FC = () => {
     }
   };
 
+  const checkEnvVars = async () => {
+    setTestResult('Checking environment variables...');
+    try {
+      const response = await fetch('/api/env-check');
+      const data = await response.json();
+      setTestResult(`📋 ENV CHECK (Status: ${response.status})\n\n${JSON.stringify(data, null, 2)}`);
+    } catch (error) {
+      setTestResult(`❌ ENV CHECK FAILED: ${error}`);
+    }
+  };
+
   if (!isOpen) {
     return (
       <button
@@ -135,6 +146,9 @@ export const DebugPanel: React.FC = () => {
       <div className="debug-section">
         <h4>Connection Tests</h4>
         <div className="debug-buttons">
+          <button onClick={checkEnvVars} className="debug-btn">
+            🔍 Check Vercel Environment Variables
+          </button>
           <button onClick={testSupabaseConnection} className="debug-btn">
             Test API Connection
           </button>
