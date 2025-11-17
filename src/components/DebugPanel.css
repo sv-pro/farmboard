@@ -87,26 +87,28 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: #1f2937;
-  font-weight: 500;
+  color: #000000;
+  font-weight: 600;
+  font-size: 13px;
 }
 
 .debug-info strong {
-  color: #111827;
+  color: #000000;
   font-weight: 700;
 }
 
 .debug-info code.selectable {
-  background: #f3f4f6;
-  color: #111827;
-  padding: 8px;
+  background: #ffffff;
+  color: #000000;
+  padding: 10px;
   border-radius: 4px;
   font-family: 'Monaco', 'Menlo', monospace;
-  font-size: 11px;
+  font-size: 12px;
   word-break: break-all;
   user-select: all;
   cursor: text;
-  border: 1px solid #d1d5db;
+  border: 2px solid #000000;
+  font-weight: 600;
 }
 
 .copy-btn {
@@ -125,18 +127,20 @@
 }
 
 .debug-json {
-  background: #111827;
-  color: #34d399;
+  background: #000000;
+  color: #00ff00;
   padding: 12px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 12px;
   font-family: 'Monaco', 'Menlo', monospace;
   max-height: 300px;
   overflow-y: auto;
   margin: 0;
   white-space: pre-wrap;
   word-break: break-all;
-  border: 1px solid #374151;
+  border: 2px solid #00ff00;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .debug-buttons {
@@ -164,19 +168,20 @@
 }
 
 .test-result {
-  background: #f9fafb;
-  color: #111827;
+  background: #ffffff;
+  color: #000000;
   padding: 12px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 13px;
   font-family: 'Monaco', 'Menlo', monospace;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
   margin: 0;
   white-space: pre-wrap;
   word-break: break-all;
-  border: 1px solid #d1d5db;
-  font-weight: 500;
+  border: 2px solid #dc2626;
+  font-weight: 600;
+  line-height: 1.6;
 }
 
 @media (max-width: 640px) {
