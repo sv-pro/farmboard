@@ -80,6 +80,8 @@ export class SupabaseStorage {
         user_id: userId,
         missions: progress.missions,
         last_updated: new Date().toISOString(),
+      }, {
+        onConflict: 'user_id', // Specify which column to use for conflict resolution
       });
 
     if (error) {
