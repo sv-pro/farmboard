@@ -63,10 +63,20 @@ async function handlePost(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error updating progress:', error);
+
+    // Serialize the error properly for debugging
+    const errorDetails = error instanceof Error
+      ? {
+          ...error, // Include any additional properties first
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+        }
+      : error;
+
     return res.status(500).json({
       error: 'Failed to update progress',
-      details: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
+      details: JSON.parse(JSON.stringify(errorDetails)),
     });
   }
 }
