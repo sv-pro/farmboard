@@ -32,7 +32,10 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(progress);
   } catch (error) {
     console.error('Error fetching progress:', error);
-    return res.status(500).json({ error: 'Failed to fetch progress' });
+    return res.status(500).json({
+      error: 'Failed to fetch progress',
+      details: error instanceof Error ? error.message : String(error),
+    });
   }
 }
 
@@ -60,7 +63,11 @@ async function handlePost(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error updating progress:', error);
-    return res.status(500).json({ error: 'Failed to update progress' });
+    return res.status(500).json({
+      error: 'Failed to update progress',
+      details: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
   }
 }
 
