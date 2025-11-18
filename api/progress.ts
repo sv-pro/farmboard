@@ -88,7 +88,10 @@ async function handleDelete(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error deleting progress:', error);
-    return res.status(500).json({ error: 'Failed to delete progress' });
+    return res.status(500).json({
+      error: 'Failed to delete progress',
+      details: error instanceof Error ? error.message : String(error),
+    });
   }
 }
 
