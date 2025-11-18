@@ -109,7 +109,7 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <div>
-            <h1>🚀 Farming Mission Board</h1>
+            <h1>🚀 Farming Mission Borg!</h1>
             <p className="app-description">
               Track and complete farming missions across multiple blockchain networks
             </p>
